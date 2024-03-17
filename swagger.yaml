@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: Minha API
+  version: 1.0.0
+  description: Descrição da minha API
+
+paths:
+  /:
+    get:
+      summary: Retorna os usuários do banco de dados
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nome:
+                    type: string
+                    example: Jorge
+                  estado:
+                    type: string
+                    example: Rj
+  /usuario: 
+    post:                                  
+      summary: Insere um usuário no banco de dados
+      requestBody:                         
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  nome:
+                    type: string
+                    example: Jorge
+                  estado:
+                    type: string
+                    example: Rj
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nome:
+                    type: string
+                    example: Jorge
+                  estado:
+                    type: string
+                    example: Rj
+    # post:
+    #   summary: Insere um usuário no banco de dados
+    #   responses:
+    #     '200':
+    #       description: OK
+    #       content:
+    #         application/json:
+    #           schema:
+    #             type: object
+                # properties:
+                #   nome:
+                #     type: string
+                #     example: Jorge
+                #   estado:
+                #     type: string
+                #     example: Rj
+        
