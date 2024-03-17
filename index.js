@@ -23,6 +23,9 @@ const pool = new Pool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     database: process.env.DB_NAME,
+    ssl: {
+        rejectUnauthorized: false
+    }
 })
 
 app.get('/', async (req, res) => {
