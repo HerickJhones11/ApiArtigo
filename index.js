@@ -1,63 +1,59 @@
-const express = require('express')
-const { Pool } = require('pg');
-var bodyParser = require('body-parser')
 
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./swagger.yaml');
+const port = 3000;
+const { configurarPacotes, connectDatabase } = require('./configure')
+const { 
+    inserirUsuario,
+    obterUsuarios,
+    inserirEstado,
+    obterEstados,
+    inserirAcertosPorCategoria,
+    obterAcertosPorCategoria
+ } = require('./function')
 
+var app = configurarPacotes();
 
-require('dotenv').config();
-var app = express()
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-const port = 3000
-
-const pool = new Pool({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
-    ssl: {
-        rejectUnauthorized: false
-    }
-})
-
-app.get('/', async (req, res) => {
-    try {
-        const client = await pool.connect();
-        const result = await client.query('SELECT * FROM usuario');
-        const results = { 'results': (result) ? result.rows : null };
-        res.json(results);
-        client.release();
-    } catch (err) {
-        console.error(err);
-        res.send("Erro ao buscar dados");
-    }
+app.listen(port, () => {
+    connectDatabase();
 });
 
-async function inserirUsuario(usuario) {
-    try {
-        const client = await pool.connect();
-        const query = 'INSERT INTO usuario (nome, estado) VALUES ($1, $2) RETURNING *';
-        const values = [usuario.nome, usuario.estado];
-        const result = await client.query(query, values);
-        console.log('Inserção bem-sucedida:', result.rows[0]);
-        client.release();
-    } catch (error) {
-        console.error('Erro ao inserir:', error);
+app.post('/InserirUsuario', async (req, res) => {
+    try{
+        var user = await inserirUsuario(req.body);
+    }catch(e){
+        res.status(400).send(e);
     }
-}
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+    res.send(user);
+});
 
-app.post('/usuario', (req, res) => {
-    inserirUsuario(req.body);
-    res.send(req.body);
+app.get('/NotasUsuario', async (req, res) => {
+    var usuarios = await obterUsuarios();
+    res.json(usuarios);
+});
+
+app.post('/InserirEstado', async (req, res) => {
+    try{
+        var estado = await inserirEstado(req.body);
+    }catch(e){
+        res.status(400).send(e);
+    }
+    res.send(estado);
+});
+
+app.get('/NotasEstado', async (req, res) => {
+    var estados = await obterEstados();
+    res.json(estados);
+});
+
+app.post('/InserirAcertosPorCategoria', async (req, res) => {
+    try{
+        var acertosPorCategoria = await inserirAcertosPorCategoria(req.body);
+    }catch(e){
+        res.status(400).send(e);
+    }
+    res.send(acertosPorCategoria);
+});
+
+app.get('/AcertosPorCategoria', async (req, res) => {
+    var acertosPorCategorias = await obterAcertosPorCategoria();
+    res.json(acertosPorCategorias);
 });
