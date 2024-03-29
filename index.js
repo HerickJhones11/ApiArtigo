@@ -23,7 +23,7 @@ app.post('/RegisterExam', async (req, res) => {
             await questionRegistry(q)
         });
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-        await delay(500);
+        await delay(1000);
         await examRegistry(questionList);
         generateSpreadSheet();
         return res.status(200).send(sucessMessage);
