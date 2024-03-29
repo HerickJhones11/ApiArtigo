@@ -15,22 +15,15 @@ app.listen(port, () => {
     connectDatabase();
 });
 
-app.post('/RegisterQuestion', async (req, res) => {
-    var sucessMessage = "Dados coletados com sucesso.";
+app.post('/RegisterExam', async (req, res) => {
+    var sucessMessage = "Dados coletados com sucesso. Gerando planilha no servidor";
     try{
         var questionList = req.body;
         await questionList.forEach(async q => {
             await questionRegistry(q)
         });
-        res.redirect(307, '/RegisterExam')
-    }catch(e){
-        return res.status(400).send(e.message);
-    }
-});
-
-app.post('/RegisterExam', async (req, res) => {
-    var sucessMessage = "Dados coletados com sucesso. Gerando planilha no servidor";
-    try{
+        const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+        await delay(1000);
         await examRegistry();
         generateSpreadSheet();
         return res.status(200).send(sucessMessage);
