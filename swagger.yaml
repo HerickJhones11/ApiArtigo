@@ -5,9 +5,45 @@ info:
   description: Descrição da minha API
 
 paths:
-  /NotasUsuario:
+  /GetExams:
     get:
-      summary: Retorna os usuários do banco de dados
+      summary: Retorna os exames do banco de dados
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uf:
+                    type: string
+                    example: CE
+                  period:
+                    type: string
+                    example: 202403
+                  score:
+                    type: number
+                    example: 100
+  /RegisterExam: 
+    post:                                  
+      summary: Insere exames no banco de dados
+      requestBody:                         
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              properties:
+                  uf:
+                    type: string
+                    example: CE
+                  period:
+                    type: string
+                    example: 202403
+                  score:
+                    type: number
+                    example: 100
       responses:
         '200':
           description: OK
@@ -25,170 +61,4 @@ paths:
                   nota:
                     type: number
                     example: 100
-  /InserirUsuario: 
-    post:                                  
-      summary: Insere um usuário no banco de dados
-      requestBody:                         
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                  nome:
-                    type: string
-                    example: Jorge
-                  estado:
-                    type: string
-                    example: Rj
-                  nota:
-                    type: number
-                    example: 100
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  nome:
-                    type: string
-                    example: Jorge
-                  estado:
-                    type: string
-                    example: Rj
-                  nota:
-                    type: number
-                    example: 100
-  /NotasEstado:
-    get:
-      summary: Retorna os Estados do banco de dados
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  estado:
-                    type: string
-                    example: Rj
-                  nota:
-                    type: number
-                    example: 100
-  /InserirEstado: 
-    post:                                  
-      summary: Insere um usuário no banco de dados
-      requestBody:                         
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                  estado:
-                    type: string
-                    example: Rj
-                  nota:
-                    type: number
-                    example: 100
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  estado:
-                    type: string
-                    example: Rj
-                  nota:
-                    type: number
-                    example: 100
-  /AcertosPorCategoria:
-    get:
-      summary: Retorna os AcertosPorCategoria do banco de dados
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  categoria:
-                    type: string
-                    example: Defensiva
-                  acerto:
-                    type: number
-                    example: 100
-                  estado:
-                    type: string
-                    example: CE
-                  MesSimulado:
-                    type: string
-                    format: date
-                    example: CE
-  /InserirAcertosPorCategoria: 
-    post:                                  
-      summary: Insere um AcertosPorCategoria no banco de dados
-      requestBody:                         
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                  categoria:
-                    type: string
-                    example: Defensiva
-                  acerto:
-                    type: number
-                    example: 100
-                  estado:
-                    type: string
-                    example: CE
-                  mesSimulado:
-                    type: string
-                    example: "2023-03-24"
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  categoria:
-                    type: string
-                    example: Defensiva
-                  acerto:
-                    type: number
-                    example: 100
-                  estado:
-                    type: string
-                    example: CE
-                  sesSimulado:
-                    type: string
-                    format: date
-                    example: CE
-    # post:
-    #   summary: Insere um usuário no banco de dados
-    #   responses:
-    #     '200':
-    #       description: OK
-    #       content:
-    #         application/json:
-    #           schema:
-    #             type: object
-                # properties:
-                #   nome:
-                #     type: string
-                #     example: Jorge
-                #   estado:
-                #     type: string
-                #     example: Rj
-        
+  

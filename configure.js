@@ -3,7 +3,9 @@ var bodyParser = require('body-parser')
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const envFile = '.env';
+dotenv.config({ path: envFile });
 var mongoose = require('mongoose');
 
 module.exports = {
@@ -18,8 +20,13 @@ module.exports = {
         return app;
     },
     connectDatabase: function() {
-        var databaseName = "Artigo"
-        const uri = process.env.DB_Connection
+        var connectionString;
+        if(process.env.NODE_ENV == "development"){
+            connectionString = process.env.DB_Connection_Development
+        }else{
+            connectionString = process.env.DB_Connection
+        }
+        const uri = connectionString;
         mongoose.connect(uri).then(() => {
             console.log("Connected to MongoDB");
         }).catch(err => {
