@@ -117,18 +117,18 @@ function generateSpreadSheet(questionData){
         console.error('Erro ao gerar arquivo Excel:', error);
     }); 
 }
-function updateQuestion(questionOrigin, question){
+async function updateQuestion(questionOrigin, question){
     questionOrigin.amount_right += question.amount_right;
     questionOrigin.amount_error += question.amount_error;
     try{
-        questionOrigin.save();
+        await questionOrigin.save();
     }catch(e) {
         throw e;
     }
 }
-function examQuestionsGroup(){
-    return Question.find({}).then((result) => {
-        return Question.aggregate([
+async function examQuestionsGroup(){
+    return await Question.find({}).then(async (result) => {
+        return await Question.aggregate([
             {
                 $group: {
                     _id: { estado: '$uf', periodo: '$period' }, // Chave de agrupamento
@@ -145,15 +145,15 @@ function examQuestionsGroup(){
 }
 module.exports = {
     questionRegistry: async function(question){
-        Question.findOne({
+        await Question.findOne({
             category_id: question.category_id,
             uf: question.uf,
             period: question.period
-        }).then(questionOrigin => {
+        }).then(async questionOrigin => {
             if(questionOrigin){
-                updateQuestion(questionOrigin, question);
+                await updateQuestion(questionOrigin, question);
             }else{
-                createQuestion(question);
+                await createQuestion(question);
             }
         }).catch(error => {
             throw error;
