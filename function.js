@@ -204,6 +204,11 @@ module.exports = {
         }, (error) => {
             throw error;
         });
+    },
+    cleanDatabase: async function() {
+        await Exam.deleteMany({});
+        await Question.deleteMany({});
     }
+
     
 }
