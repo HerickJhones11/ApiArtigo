@@ -94,4 +94,19 @@ paths:
           application/json:
             example:
               periodo: "202402"
+  /CleanDatabase:
+    get:
+      summary: Limpa o banco de dados.
+      description: Deleta todos os registros do banco de dados.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Registros deletados com sucesso."
     
