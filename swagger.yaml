@@ -55,6 +55,11 @@ paths:
               example:
                 - category_id: 1
                   uf: CE
+                  period: 202402
+                  amount_error: 7
+                  amount_right: 3
+                - category_id: 1
+                  uf: CE
                   period: 202403
                   amount_error: 7
                   amount_right: 3
