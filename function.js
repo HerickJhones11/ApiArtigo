@@ -7,6 +7,7 @@ class ExcelGenerator {
         this.questionData = questionData
         this.examData = examData
         this.workBook = new ExcelJS.Workbook();
+        this.fileName = './collectedData.xlsx';
     }
 }
 async function createQuestion(question){
@@ -74,49 +75,19 @@ function generateExamData(excelGenerator){
     });
 }
 function generateXLS(excelGenerator) {
-    const fileName = './collectedData.xlsx';
-    
     generateQuestionData(excelGenerator);
     generateExamData(excelGenerator);
-    excelGenerator.workBook.xlsx.writeFile(fileName)
-    .then(() => {
-        console.log('Arquivo Excel gerado com sucesso:', fileName);
-    })
-    .catch((error) => {
-        console.error('Erro ao gerar arquivo Excel:', error);
-    });
-}
-function generateSpreadSheet(questionData){
-    const fileName = `./collectedData.csv`;
 
-    const table = "question";
-    const workBook = new ExcelJS.Workbook();
-    const workSheet = workBook.addWorksheet(table)
-
-    questionData.forEach(q => {
-        workSheet.addRow({ 
-            UF: q.uf,
-            period: q.period,
-            category_id: q.category_id,
-            amt_error: q.amount_error,
-            amt_right: q.amount_right 
-        });
-    });
-    workSheet.columns = [
-        { header: 'UF', key: 'UF', width: 10 },
-        { header: 'period', key: 'period', width: 15 },
-        { header: 'category_id', key: 'category_id', width: 15 },
-        { header: 'amt_right', key: 'amt_right', width: 15 },
-        { header: 'amt_error', key: 'amt_error', width: 15 }
-    ]
-    workBook.xlsx.writeFile(fileName)
-    .then(() => {
-        console.log('Arquivo Excel gerado com sucesso:', fileName);
-    })
-    .catch((error) => {
-        console.error('Erro ao gerar arquivo Excel:', error);
-    }); 
+    return excelGenerator;
+    // excelGenerator.workBook.xlsx.writeFile(fileName)
+    // .then(() => {
+    //     console.log('Arquivo Excel gerado com sucesso:', fileName);
+    // })
+    // .catch((error) => {
+    //     console.error('Erro ao gerar arquivo Excel:', error);
+    // });
 }
+
 async function updateQuestion(questionOrigin, question){
     questionOrigin.amount_right += question.amount_right;
     questionOrigin.amount_error += question.amount_error;
@@ -172,7 +143,7 @@ module.exports = {
             throw error;
         });
         var excelGenerator = new ExcelGenerator(questionData, examData)
-        generateXLS(excelGenerator);
+        return generateXLS(excelGenerator);
     },
     examRegistry: async function(){
         var questionsExam = await examQuestionsGroup()

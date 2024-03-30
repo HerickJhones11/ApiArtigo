@@ -27,7 +27,7 @@ app.post('/RegisterExam', async (req, res) => {
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
         await delay(1000);
         await examRegistry();
-        generateSpreadSheet();
+
         return res.status(200).send(sucessMessage);
     }catch(e){
         return res.status(400).send(e.message);
