@@ -1,8 +1,8 @@
 const express = require('express')
 var bodyParser = require('body-parser')
 const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./swagger.yaml');
+// const YAML = require('yamljs');
+// const swaggerDocument = YAML.load('./swagger.yaml');
 const dotenv = require('dotenv');
 const envFile = '.env';
 dotenv.config({ path: envFile });
@@ -15,7 +15,7 @@ module.exports = {
         app.use(bodyParser.urlencoded({ extended: false }))
         app.use(bodyParser.json())
 
-        app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+        // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
         return app;
     },
