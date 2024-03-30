@@ -208,6 +208,25 @@ module.exports = {
     cleanDatabase: async function() {
         await Exam.deleteMany({});
         await Question.deleteMany({});
+    },
+    questionQueryable: async function(){
+        return await Question.find({}).then(questionList => {
+            return questionList;
+        }, (error) => {
+            throw error;
+        });
+    },
+    getCategoryData: async function(periodo) {
+        filtro = {}
+        if(periodo){
+            filtro = { period: periodo }
+        }
+        return await Question.find(filtro).then(questionList => {
+            return questionList;
+        }, (error) => {
+            throw error;
+        });
+
     }
 
     

@@ -6,7 +6,9 @@ const {
     generateSpreadSheet,
     examRegistry,
     getExams,
-    cleanDatabase
+    cleanDatabase,
+    questionQueryable,
+    getCategoryData
  } = require('./function')
 
 var app = configurarPacotes();
@@ -47,4 +49,14 @@ app.get('/CleanDatabase', async (req, res) => {
             return res.status(400).send(e.message);
         }
     }
+});
+app.get('/GetQuestions', async (req, res) => {
+    var questionList = await questionQueryable();
+    res.json(questionList);
 })
+app.post('/GetCategoryData', async (req, res) => {
+    var periodo = req.body.periodo;
+    var categoryData = await getCategoryData(periodo);
+    res.json(categoryData);
+    
+});

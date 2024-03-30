@@ -76,4 +76,22 @@ paths:
       responses:
         '200':
           description: Dados coletados com sucesso. Gerando planilha no servidor
+  /GetCategoryData:
+    post:
+      summary: Retorna dados da categoria.
+      parameters:
+        - in: query
+          name: periodo
+          schema:
+            type: string
+          description: Período no formato "YYYYMM".
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        required: false
+        content:
+          application/json:
+            example:
+              periodo: "202402"
     
