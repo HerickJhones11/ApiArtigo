@@ -25,40 +25,55 @@ paths:
                   score:
                     type: number
                     example: 100
-  /RegisterExam: 
-    post:                                  
+  /RegisterExam:
+    post:
       summary: Insere exames no banco de dados
-      requestBody:                         
+      requestBody:
         required: true
         content:
           application/json:
             schema:
               type: array
-              properties:
+              items:
+                type: object
+                properties:
+                  category_id:
+                    type: integer
+                    example: 1
                   uf:
                     type: string
                     example: CE
                   period:
-                    type: string
+                    type: integer
                     example: 202403
-                  score:
-                    type: number
-                    example: 100
+                  amount_error:
+                    type: integer
+                    example: 7
+                  amount_right:
+                    type: integer
+                    example: 3
+              example:
+                - category_id: 1
+                  uf: CE
+                  period: 202403
+                  amount_error: 7
+                  amount_right: 3
+                - category_id: 2
+                  uf: CE
+                  period: 202403
+                  amount_error: 5
+                  amount_right: 5
+                - category_id: 4
+                  uf: CE
+                  period: 202403
+                  amount_error: 1
+                  amount_right: 9
+                - category_id: 4
+                  uf: RJ
+                  period: 202403
+                  amount_error: 1
+                  amount_right: 9
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  nome:
-                    type: string
-                    example: Jorge
-                  estado:
-                    type: string
-                    example: Rj
-                  nota:
-                    type: number
-                    example: 100
-  
+          description: Dados coletados com sucesso. Gerando planilha no servidor
+    
