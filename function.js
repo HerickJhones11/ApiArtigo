@@ -98,16 +98,7 @@ async function updateQuestion(questionOrigin, question){
     }
 }
 async function examQuestionsGroup(){
-    return await Question.find({}).then(async (result) => {
-        return await Question.aggregate([
-            {
-                $group: {
-                    _id: { estado: '$uf', periodo: '$period' }, // Chave de agrupamento
-                    documentos: { $push: '$$ROOT' } // Array com os documentos agrupados
-                }
-            }
-        ])
-    }).then(groupedResults => {
+    return await Question.find({}).then(groupedResults => {
         return groupedResults;
     })
     .catch(error => {
@@ -145,29 +136,27 @@ module.exports = {
         var excelGenerator = new ExcelGenerator(questionData, examData)
         return generateXLS(excelGenerator);
     },
-    examRegistry: async function(){
-        var questionsExam = await examQuestionsGroup()
-        questionsExam.forEach(async questionList => {
-            var total_acertos = 0;
-            var total_erros = 0;
-            var periodo = parseInt(questionList._id.periodo, 10);
-            var uf = questionList._id.estado;
-            questionList.documentos.forEach(q => {
-                total_acertos += q.amount_right;
-                total_erros += q.amount_error;
-            });
-            var score = (total_acertos/(total_acertos + total_erros)) * 1000;
-            const newExam = new Exam({
-                uf: uf,
-                period: periodo,
-                score: score,
-            });
-            try{
-                await newExam.save();
-            }catch(e){
-                throw e;
-            }
+    examRegistry: async function(questionList){
+        var total_acertos = 0;
+        var total_erros = 0;
+        var periodo = parseInt(questionList[0].period, 10);
+        var uf = questionList[0].estado;
+
+        questionList.forEach(async question => {
+            total_acertos += question.amount_right;
+            total_erros += question.amount_error;
         });
+        var score = (total_acertos/(total_acertos + total_erros)) * 1000;
+        const newExam = new Exam({
+            uf: uf,
+            period: periodo,
+            score: score,
+        });
+        try{
+            await newExam.save();
+        }catch(e){
+            throw e;
+        }
     },
     getExams: async function(){
         return await Exam.find({}).then(examList => {

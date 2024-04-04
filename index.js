@@ -3,7 +3,6 @@ const port = 3000;
 const { configurarPacotes, connectDatabase } = require('./configure')
 const { 
     questionRegistry,
-    generateSpreadSheet,
     examRegistry,
     getExams,
     cleanDatabase,
@@ -26,7 +25,7 @@ app.post('/RegisterExam', async (req, res) => {
         });
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
         await delay(1000);
-        await examRegistry();
+        await examRegistry(questionList);
 
         return res.status(200).send(sucessMessage);
     }catch(e){
