@@ -146,7 +146,7 @@ module.exports = {
             total_acertos += question.amount_right;
             total_erros += question.amount_error;
         });
-        var score = (total_acertos/(total_acertos + total_erros)) * 1000;
+        var score = ((total_acertos/(total_acertos + total_erros)) * 1000).toFixed(2);
         const newExam = new Exam({
             uf: uf,
             period: periodo,
