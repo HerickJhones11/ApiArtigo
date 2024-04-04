@@ -140,7 +140,7 @@ module.exports = {
         var total_acertos = 0;
         var total_erros = 0;
         var periodo = parseInt(questionList[0].period, 10);
-        var uf = questionList[0].estado;
+        var uf = questionList[0].uf;
 
         questionList.forEach(async question => {
             total_acertos += question.amount_right;
